@@ -3,6 +3,8 @@ import './App.css';
 import DropDown from './component/DropDown';
 import Header from './component/Header';
 // import CheckBox from './component/CheckBox'
+// import ComponentCheck from './component/ComponentCheck'
+import "@kenshooui/react-multi-select/dist/style.css"
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
       <Header/>
       <DropDown/>
       {/* <CheckBox/> */}
+      {/* <ComponentCheck/> */}
     </div>
   );
 }

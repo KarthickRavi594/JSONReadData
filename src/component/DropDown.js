@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import MultiSelect from "@kenshooui/react-multi-select";
 import { Row } from 'simple-flexbox';
 import axios from 'axios';
 
@@ -14,19 +14,20 @@ class DropDown extends React.Component {
             Brand: [],
             Code: [],
             Company: []
-        }
+        };
         this.dropDownList = this.dropDownList.bind(this);
         this.getValueObject = this.getValueObject.bind(this);
     }
+
     dropDownList(target) {
         let data = []
         const url = `http://localhost:3456/${target}`
         axios.get(url)
             .then(res => {
-                res.data.map(x => {
+                res.data.map((x,index) => {
                     let obj = {}
+                    obj.id = index
                     obj.label = x
-                    obj.value = x
                     data.push(obj)
                 })
             })
@@ -53,11 +54,11 @@ class DropDown extends React.Component {
                     })
                 }
                 if (e.length < this.state[value].length) {
-                    this.state[value] = this.state[value].filter(x => e.some(val => x.value === val.value))
+                    this.state[value] = this.state[value].filter(x => e.some(val => x.label === val.label))
                 }
             }
         }
-        if (e.length == 0) {
+        if (e.length === 0) {
             if (this.state.dropdownValueButton.includes(value)) {
                 this.state[value] = []
             }
@@ -72,13 +73,15 @@ class DropDown extends React.Component {
             console.log(response);
         })
     }
-
     render() {
         const dropDownDesign = this.state.dropdownValueButton.map((values, index) => {
-            const options = this.dropDownList(values);
+            const items = this.dropDownList(values);
+            let name={
+                searchPlaceholder : values
+            }
             return (
                 <div>
-                    <ReactMultiSelectCheckboxes key={index} options={options} placeholderButtonLabel={values} onChange={this.changeValue.bind(this, values)} />
+                    <MultiSelect key={index} items={items} messages={name} onChange={this.changeValue.bind(this, values)} showSelectedItems={false} />
                 </div>
             )
         })
